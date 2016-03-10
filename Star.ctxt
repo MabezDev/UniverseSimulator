@@ -1,0 +1,17 @@
+#BlueJ class context
+comment0.params=xPos\ yPos\ xVel\ yVel\ objectDiameter\ objectColor\ theUniverse
+comment0.target=Star(int,\ int,\ int,\ int,\ int,\ java.awt.Color,\ Universe)
+comment0.text=\r\n\ Create\ a\ star\ object.\r\n\r\n\ @param\ xPos\ \ the\ horizontal\ coordinate\ of\ the\ object\r\n\ @param\ yPos\ \ the\ vertical\ coordinate\ of\ the\ object\r\n\ @param\ xVel\ \ the\ horizontal\ speed\ of\ the\ object\r\n\ @param\ yVel\ \ the\ vertical\ speed\ of\ the\ object\r\n\ @param\ objectDiameter\ \ the\ diameter\ (in\ pixels)\ of\ the\ object\r\n\ @param\ objectColor\ \ the\ color\ of\ the\ object\r\n\ @param\ theUniverse\ \ the\ universe\ this\ object\ is\ in\r\n
+comment1.params=
+comment1.target=void\ updateSubObjects()
+comment1.text=\r\n\ Update\ all\ attatched\ planets\ positions.\r\n
+comment2.params=degress\ radius\ x\ y
+comment2.target=int[]\ getPointOnCircle(float,\ float,\ int,\ int)
+comment2.text=\r\n\ Returns\ a\ point\ on\ an\ imaginary\ circle.\ Used\ for\ orbiting.\r\n\ @param\ degrees\ -\ from\ 1\ to\ 360,\ 360\ being\ a\ full\ rotation.\r\n\ @param\ radius\ -\ sets\ the\ size\ of\ the\ imaginary\ circle.\r\n\ @param\ x\ -\ the\ centre\ point\ x\ of\ the\ imaginary\ circle.\r\n\ @param\ y\ -\ the\ centre\ point\ y\ of\ the\ imaginary\ circle.\r\n\ @return\ an\ array\ with\ the\ x\ and\ y\ value\ of\ a\ point\ on\ a\ circle.\r\n
+comment3.params=i
+comment3.target=void\ addLife(int)
+comment3.text=\r\n\ Adds\ life\ to\ the\ star\ object.\r\n\ @param\ life\ to\ add.\r\n
+comment4.params=planet
+comment4.target=void\ addPlanet(Planet)
+comment4.text=\r\n\ \ Attatches\ a\ planet\ to\ this\ star\ from\ here\ the\ planet\ will\ orbit\ the\ star.\r\n\ \ @param\ the\ planet\ object\ to\ add.\r\n
+numComments=5
