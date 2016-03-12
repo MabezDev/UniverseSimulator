@@ -1,6 +1,7 @@
 import java.awt.*;
 
 
+
 public class Comet extends Space_Object
 {   
     

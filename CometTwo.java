@@ -1,6 +1,7 @@
 import java.awt.*;
 import java.util.Random;
 
+
 public class CometTwo extends Comet
 {   
     private int minSpeed = 1;

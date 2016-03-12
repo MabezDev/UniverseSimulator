@@ -16,7 +16,10 @@ public class BlackHole extends Space_Object
      */
     public BlackHole(int xPos, int yPos, int xVel, int yVel, int objectDiameter, Color objectColor, Universe theUniverse)
     {
-       super(xPos,yPos,xVel,yVel,objectDiameter, objectColor, theUniverse); 
+       super(xPos,yPos,xVel,yVel,objectDiameter, objectColor, theUniverse);
+    }
+    
+    public BlackHole(){
     }
 
 }

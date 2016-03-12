@@ -1,5 +1,6 @@
 import java.awt.*;
 import java.util.ArrayList;
+import java.io.*;
 
 
 /**
@@ -16,7 +17,7 @@ import java.util.ArrayList;
  * @version 2016.01.22
  */
 
-public class Space_Object
+public class Space_Object implements Serializable
 {
     protected Color color;
     protected int diameter;
@@ -54,6 +55,10 @@ public class Space_Object
         destroyed = false;
         //degrees = 1;
         
+    }
+    
+    public Space_Object (){
+        groundPosition = 0;
     }
 
    

@@ -1,6 +1,7 @@
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.io.Serializable;
 /**
  * Class Universe - a universe which contains 3 objects  
  *
@@ -28,9 +29,9 @@ public class Universe
      */
     public Universe()
     {
-        universe = new Canvas("Universe Simulation", 600, 500);
         rightEdge = 600;
         bottomEdge = 500;
+        universe = new Canvas("Universe Simulator",rightEdge,bottomEdge);
         comets = new ArrayList<Comet>();
         stars = new ArrayList<Star>();
         blackHoles = new ArrayList<BlackHole>();
@@ -49,6 +50,7 @@ public class Universe
         
         
     }
+    
     /**
      *  Create a universe with given name and size
      *  @param name The name to give the universe
@@ -76,9 +78,7 @@ public class Universe
             ArrayList removeB = new ArrayList();
             ArrayList removeS = new ArrayList();
             
-            /*
-             * ATTENTION - >>>> NEED TO PUT THE OTHER OBJECT BACK IN THERE OWN LOOPS BECAUSE WHEN ALL TH ECOMETS DIE THE SIMULATION STOPS
-             */
+            
             for(Comet c : comets){
                 c.move();
                 c.updateLife();
@@ -89,12 +89,6 @@ public class Universe
                         star.addLife((int) Math.PI * c.getDiameter()/2);
                         c.destroy();
                     }
-                    this.draw(star);
-                    star.updateLife();
-                    star.updateSubObjects();//updates it surrounding planets
-                    if(star.isDestroyed()){
-                        removeS.add(star);
-                    }
                 }
                 
                 for(Planet planet: planets){
@@ -102,10 +96,6 @@ public class Universe
                      (c.getYPosition() +planet.getDiameter()/2 + c.getDiameter()/2 > planet.getYPosition()) && (c.getYPosition() < planet.getYPosition()+planet.getDiameter()/2 + c.getDiameter()/2)){
                         planet.addToDiameter(c.getDiameter()/2);
                         c.destroy();
-                    }
-                    planet.updateLife();
-                    if(planet.isDestroyed()){
-                        removeP.add(planet);
                     }
                 }
                 
@@ -118,13 +108,8 @@ public class Universe
                         //check if its been completely sucked in
                         if((c.getXPosition() > blackHole.getXPosition() - 5) && (c.getXPosition() < blackHole.getXPosition()+5) && 
                         (c.getYPosition() > blackHole.getYPosition() - 5) && (c.getYPosition() < blackHole.getYPosition() + 5)){
-                            removeC.add(c);
+                            c.destroy();
                         }
-                    }
-                    this.draw(blackHole);
-                    blackHole.updateLife();
-                    if(blackHole.isDestroyed()){
-                        removeB.add(blackHole);
                     }
                 }
                 
@@ -133,14 +118,14 @@ public class Universe
                     (c.getYPosition() > c2.getYPosition()-c2.getDiameter()/2) && (c.getYPosition() < c2.getYPosition()+c2.getDiameter()/2)){
                         if(!c.getType().equals(c2.getType())){
                             if(c.getDiameter() > c2.getDiameter()){
-                                removeC.add(c2);
+                                c2.destroy();
                             } else if(c.getDiameter() < c2.getDiameter()){
-                                removeC.add(c);
+                                c.destroy();
                             } else {
                                 if((c.getXSpeed() > c2.getXSpeed()) && (c.getYSpeed() > c2.getYSpeed())){
-                                    removeC.add(c2);
+                                    c2.destroy();
                                 } else if((c.getXSpeed() < c2.getXSpeed()) && (c.getYSpeed() < c2.getYSpeed())) {
-                                    removeC.add(c);
+                                    c.destroy();
                                 }
                             }
                         } else {
@@ -154,18 +139,42 @@ public class Universe
                 }
            }
            
+           for(Star star: stars){
+               this.draw(star);
+               star.updateLife();
+               star.updateSubObjects();//updates it surrounding planets
+               if(star.isDestroyed()){
+                        removeS.add(star);
+               }
+           }
            
-            this.eraseAll(removeC);
-            comets.removeAll(removeC);
+           for(BlackHole blackHole: blackHoles){
+               this.draw(blackHole);
+               blackHole.updateLife();
+               if(blackHole.isDestroyed()){
+                        removeB.add(blackHole);
+               }
+           }
+           
+           for(Planet planet: planets){
+               planet.updateLife();
+               if(planet.isDestroyed()){
+                   removeP.add(planet);
+               }
+           }
+           
+           
+           this.eraseAll(removeC);
+           comets.removeAll(removeC);
             
-            this.eraseAll(removeS);
-            stars.removeAll(removeS);
+           this.eraseAll(removeS);
+           stars.removeAll(removeS);
             
-            this.eraseAll(removeP);
-            planets.removeAll(removeP);
+           this.eraseAll(removeP);
+           planets.removeAll(removeP);
             
-            this.eraseAll(removeB);
-            blackHoles.removeAll(removeB);
+           this.eraseAll(removeB);
+           blackHoles.removeAll(removeB);
             
             
         } else {

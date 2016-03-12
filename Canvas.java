@@ -1,6 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 import java.awt.geom.*;
+import java.io.*;
 
 /**
  * Class Canvas - a class to allow for simple graphical 
@@ -12,7 +13,7 @@ import java.awt.geom.*;
  * @version 2011.07.31
  */
 
-public class Canvas
+public class Canvas implements Serializable
 {
     private JFrame frame;
     private CanvasPane canvas;

@@ -5,11 +5,11 @@
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class GameThread implements Runnable
+public class SimulationThread implements Runnable
 {
     private Universe universe;
     
-    public GameThread()
+    public SimulationThread()
     {
         universe = new Universe();
     }
