@@ -21,6 +21,9 @@ public class Universe
     private ArrayList<Star> stars;
     private ArrayList<BlackHole> blackHoles;
     private ArrayList<Planet> planets;
+    private Interface myInterface;
+    private boolean done = false;
+    private Color[] validColors = {Color.RED,Color.CYAN,Color.BLUE,Color.GRAY,Color.PINK,Color.GREEN};
 
     /**
      * Create a universe with default name and size. Creates a fresh canvas to display the universe
@@ -34,6 +37,9 @@ public class Universe
         stars = new ArrayList<Star>();
         blackHoles = new ArrayList<BlackHole>();
         planets = new ArrayList<Planet>();
+        
+        
+        myInterface = new Interface(this);
         
         Star s1 = new Star(80,20,0,0,25,Color.YELLOW,this);
         stars.add(s1);
@@ -64,10 +70,12 @@ public class Universe
     *Main Loop, handles all collision detection and object updates.  
     */
     public void main(){
-        boolean done = false;
         while(!done){
             universe.wait(50);
             ArrayList removeC = new ArrayList();
+            ArrayList removeP = new ArrayList();
+            ArrayList removeB = new ArrayList();
+            ArrayList removeS = new ArrayList();
             for(Comet c : comets){
                 c.move();
                 c.updateLife();
@@ -75,18 +83,26 @@ public class Universe
                 for(Star star: stars){
                     if((c.getXPosition() + star.getDiameter()/2 + c.getDiameter()/2 > star.getXPosition()) && (c.getXPosition() < star.getXPosition()+star.getDiameter()/2 + c.getDiameter()/2) && 
                     (c.getYPosition() +star.getDiameter()/2 + c.getDiameter()/2 > star.getYPosition()) && (c.getYPosition() < star.getYPosition()+star.getDiameter()/2 + c.getDiameter()/2)){
-                        System.out.println("Comet collided with a star");
                         star.addLife((int) Math.PI * c.getDiameter()/2);
                         c.destroy();
+                    }
+                    this.draw(star);
+                    star.updateLife();
+                    star.updateSubObjects();//updates it surrounding planets
+                    if(star.isDestroyed()){
+                        removeS.add(star);
                     }
                 }
                 
                 for(Planet planet: planets){
                      if((c.getXPosition() + planet.getDiameter()/2 + c.getDiameter()/2 > planet.getXPosition()) && (c.getXPosition() < planet.getXPosition()+planet.getDiameter()/2 + c.getDiameter()/2) && 
                      (c.getYPosition() +planet.getDiameter()/2 + c.getDiameter()/2 > planet.getYPosition()) && (c.getYPosition() < planet.getYPosition()+planet.getDiameter()/2 + c.getDiameter()/2)){
-                        System.out.println("Comet collided with a planet");
                         planet.addToDiameter(c.getDiameter()/2);
                         c.destroy();
+                    }
+                    planet.updateLife();
+                    if(planet.isDestroyed()){
+                        removeP.add(planet);
                     }
                 }
                 
@@ -97,12 +113,15 @@ public class Universe
                         c.setXSpeed((blackHole.getXPosition() - c.getXPosition())/4);
                         c.setYSpeed((blackHole.getYPosition() - c.getYPosition())/4);
                         //check if its been completely sucked in
-                        System.out.println("c: "+c.getXPosition()+","+c.getYPosition());
-                        System.out.println("blackHole: "+blackHole.getXPosition()+","+blackHole.getYPosition());
                         if((c.getXPosition() > blackHole.getXPosition() - 5) && (c.getXPosition() < blackHole.getXPosition()+5) && 
                         (c.getYPosition() > blackHole.getYPosition() - 5) && (c.getYPosition() < blackHole.getYPosition() + 5)){
                             removeC.add(c);
                         }
+                    }
+                    this.draw(blackHole);
+                    blackHole.updateLife();
+                    if(blackHole.isDestroyed()){
+                        removeB.add(blackHole);
                     }
                 }
                 
@@ -134,40 +153,20 @@ public class Universe
             this.eraseAll(removeC);
             comets.removeAll(removeC);
             
+            this.eraseAll(removeS);
+            stars.removeAll(removeS);
             
-            ArrayList removeP = new ArrayList();
-            for(Planet p : planets){
-                p.updateLife();
-                if(p.isDestroyed()){
-                    removeP.add(p);
-                }
-            }
             this.eraseAll(removeP);
             planets.removeAll(removeP);
             
-            ArrayList removeB = new ArrayList();
-            for(BlackHole b : blackHoles){
-                this.draw(b);
-                b.updateLife();
-                if(b.isDestroyed()){
-                    removeB.add(b);
-                }
-            }
             this.eraseAll(removeB);
             blackHoles.removeAll(removeB);
+           
             
-            ArrayList removeS = new ArrayList();
-            for(Star s : stars){
-                this.draw(s);
-                s.updateLife();
-                s.updateSubObjects();//updates it surrounding planets
-                if(s.isDestroyed()){
-                    removeS.add(s);
-                }
+            
+            if(!myInterface.isFinished()){
+                myInterface.update();
             }
-            this.eraseAll(removeS);
-            stars.removeAll(removeS);
-           //stop blueJ getting stuck remove once done
         }
             
     }
@@ -181,6 +180,32 @@ public class Universe
     {
         universe.eraseCircle(spaceObj.getXPosition(), spaceObj.getYPosition(), spaceObj.getDiameter());
     }
+    
+    public void addStar(Star star){
+        stars.add(star);
+    }
+    
+    public void addPlanet(Star star,Planet planet){
+        planets.add(planet);
+        star.addPlanet(planet);
+    }
+    
+    public void addBlackHole(BlackHole bh){
+        blackHoles.add(bh);
+    }
+    
+    public void addComet(Comet c){
+        comets.add(c);
+    }
+    
+    public void finish(){
+        done = true;
+    }
+    
+    public Color[] getValidColors(){
+        return validColors;
+    }
+    
     
     /**
     * Erases all objects from an array from the canvas.

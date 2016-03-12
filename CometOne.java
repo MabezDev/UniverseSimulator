@@ -48,10 +48,8 @@ public class CometOne extends Comet
     */
     public void randomiseColor(){
         if(Math.random() < 0.2){
-          int r = rn.nextInt(255);
-          int g = rn.nextInt(255);
-          int b = rn.nextInt(255);
-          this.color = new Color(r,g,b);
+          int colorInt = rn.nextInt(this.universe.getValidColors().length - 1);
+          this.color = this.universe.getValidColors()[colorInt];
         }
     }
     

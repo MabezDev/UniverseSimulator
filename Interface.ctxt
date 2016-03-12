@@ -1,0 +1,13 @@
+#BlueJ class context
+comment0.params=uni
+comment0.target=Interface(Universe)
+comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Interface\n
+comment1.params=
+comment1.target=void\ finish()
+comment2.params=
+comment2.target=void\ update()
+comment3.params=
+comment3.target=boolean\ isFinished()
+comment4.params=
+comment4.target=void\ printMenu()
+numComments=5
