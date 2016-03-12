@@ -20,6 +20,7 @@ public class Interface
         gt = new GameThread();
         simulator = new Thread(gt);
         universe = gt.getUniverse();
+        simulator.start();
         while(!done){
             update();
         }
@@ -36,8 +37,14 @@ public class Interface
             int choice = scanner.nextInt();
             if(choice > 0 && choice <= 7){
                 if(choice==5){
-                    simulator.start();
+                    universe.resume();
                     break;
+                } else if(choice==6){
+                    universe.pause();
+                    break;
+                } else if(choice== 7){
+                    universe.finish();
+                    System.exit(0);
                 }
                 System.out.println("enter x: ");
                 int x = scanner.nextInt();
@@ -82,7 +89,7 @@ public class Interface
         System.out.println("2) add new Star.");
         System.out.println("3) add new Planet.");
         System.out.println("4) add new BlackHole.");
-        System.out.println("5) start Simulation.");
+        System.out.println("5) start/resume Simulation.");
         System.out.println("6) pause Simulation.");
         System.out.println("7) exit.");
     }

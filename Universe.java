@@ -21,8 +21,8 @@ public class Universe
     private ArrayList<Star> stars;
     private ArrayList<BlackHole> blackHoles;
     private ArrayList<Planet> planets;
+    private boolean paused = true;
     private boolean done = false;
-
     /**
      * Create a universe with default name and size. Creates a fresh canvas to display the universe
      */
@@ -67,12 +67,18 @@ public class Universe
     *Main Loop, handles all collision detection and object updates.  
     */
     public void main(){
-        while(!done){
+        while(done == false){
+            if(!paused){
             universe.wait(50);
+               
             ArrayList removeC = new ArrayList();
             ArrayList removeP = new ArrayList();
             ArrayList removeB = new ArrayList();
             ArrayList removeS = new ArrayList();
+            
+            /*
+             * ATTENTION - >>>> NEED TO PUT THE OTHER OBJECT BACK IN THERE OWN LOOPS BECAUSE WHEN ALL TH ECOMETS DIE THE SIMULATION STOPS
+             */
             for(Comet c : comets){
                 c.move();
                 c.updateLife();
@@ -147,6 +153,8 @@ public class Universe
                     removeC.add(c);
                 }
            }
+           
+           
             this.eraseAll(removeC);
             comets.removeAll(removeC);
             
@@ -158,7 +166,16 @@ public class Universe
             
             this.eraseAll(removeB);
             blackHoles.removeAll(removeB);
+            
+            
+        } else {
+            try{
+                Thread.sleep(10);
+            } catch (Exception e){
+                
+            }
         }
+    }
             
     }
     
@@ -187,6 +204,18 @@ public class Universe
     
     public void addComet(Comet c){
         comets.add(c);
+    }
+    
+    public void pause(){
+        paused = true;
+    }
+    
+    public void resume(){
+        paused = false;
+    }
+    
+    public boolean isPaused(){
+        return paused;
     }
     
     public void finish(){
