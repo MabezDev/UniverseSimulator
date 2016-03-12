@@ -24,7 +24,7 @@ public class Space_Object implements Serializable
     protected int xPosition;
     protected int yPosition;
     protected final int groundPosition;     // y position of the bottom of the Universe
-    protected Universe universe;
+    protected transient Universe universe;
     protected int xSpeed;                 // current horizontal speed   (+  moving left to right, - right to left
     protected int ySpeed;                // current vertical speed ( + moving down, - moving up)
     protected int lifeTime;
@@ -59,6 +59,10 @@ public class Space_Object implements Serializable
     
     public Space_Object (){
         groundPosition = 0;
+    }
+    
+    public void addUniverse(Universe uni){
+        this.universe = uni;
     }
 
    

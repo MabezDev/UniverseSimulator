@@ -1,0 +1,20 @@
+#BlueJ class context
+comment0.params=
+comment0.target=MySpaceObjects()
+comment1.params=
+comment1.target=java.util.ArrayList\ getComets()
+comment2.params=
+comment2.target=java.util.ArrayList\ getStars()
+comment3.params=
+comment3.target=java.util.ArrayList\ getPlanets()
+comment4.params=
+comment4.target=java.util.ArrayList\ getBlackHoles()
+comment5.params=c
+comment5.target=void\ setComets(java.util.ArrayList)
+comment6.params=c
+comment6.target=void\ setStars(java.util.ArrayList)
+comment7.params=c
+comment7.target=void\ setPlanets(java.util.ArrayList)
+comment8.params=c
+comment8.target=void\ setBlackHoles(java.util.ArrayList)
+numComments=9

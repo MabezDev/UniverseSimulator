@@ -3,6 +3,9 @@ import java.util.*;
 import java.io.IOException;
 import java.awt.*;
 
+/**
+ * 
+ */
 public class Interface
 {
     private Universe universe;
@@ -30,9 +33,13 @@ public class Interface
         }
     }
     
+    /**
+     * Shuts down the simulator and CLI and exits the program cleanly.
+     */
     private void finish(){
-        done = true;
-        //universe.finish();
+        universe.finish();
+        done  = true;
+        System.exit(0);
     }
     
     public void update(){
@@ -50,17 +57,18 @@ public class Interface
                     //save current universe
                     System.out.println("Enter the save path including the file extension: ");
                     String path = scanner.next();
+                    universe.save(SAVES_PATH+path);
                     break;
                 }else if(choice==8){
                     //load a universe
                     System.out.println("Enter the name of the file to load including the file extension: ");
                     String path2 = scanner.next();
-                    //Universe temp = SaveAndLoad.loadUniverse(SAVES_PATH+path2);
+                    universe.load(SAVES_PATH+path2);
+                    universe.applyUniverse();
                     break;
                     
                 } else if(choice== 9){
-                    universe.finish();
-                    System.exit(0);
+                    finish();
                 } else {
                     System.out.println("enter x: ");
                     int x = scanner.nextInt();
@@ -93,10 +101,6 @@ public class Interface
         }
     }
     
-    public boolean isFinished(){
-        return done;
-    }
-    
     public static Color[] getValidColors(){
         return validColors;
     }
@@ -110,7 +114,7 @@ public class Interface
         System.out.println("6) Pause Simulation.");
         System.out.println("7) Save current Universe.");
         System.out.println("8) Load a Universe.");
-        System.out.println("9) Exit.");
+        System.out.println("7) Exit.");
     }
 
 }

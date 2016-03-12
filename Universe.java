@@ -3,15 +3,16 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.io.Serializable;
 /**
- * Class Universe - a universe which contains 3 objects  
+ * Class Universe - handles all simulation and saving and loading of universes.
  *
  * @author Robert Topp
+ * @author UP745497
  * @version 2016.1.22
  */
 
 public class Universe
 {
-    private Canvas universe;
+    private transient Canvas universe;//stops the canvas being saved
     private int leftEdge = 0;     // coordinates of the edges of the universe
     private int topEdge = 0;
     private int rightEdge;
@@ -24,6 +25,8 @@ public class Universe
     private ArrayList<Planet> planets;
     private boolean paused = true;
     private boolean done = false;
+    
+    
     /**
      * Create a universe with default name and size. Creates a fresh canvas to display the universe
      */
@@ -189,6 +192,26 @@ public class Universe
     }
     
     /**
+     * Used when loading in new Space Objects to give them a universe to exist in.
+     */
+    public void applyUniverse(){
+       for(Star star: stars){
+           star.addUniverse(this);
+       }
+           
+       for(BlackHole blackHole: blackHoles){
+           blackHole.addUniverse(this);
+       }
+       
+       for(Planet planet: planets){
+           planet.addUniverse(this);
+       }
+       for(Comet comet : comets){
+           comet.addUniverse(this);
+       }
+    }
+    
+    /**
      * Erase an object from the view of the universe
      * 
      * @param spaceObj The object to be erased
@@ -198,37 +221,98 @@ public class Universe
         universe.eraseCircle(spaceObj.getXPosition(), spaceObj.getYPosition(), spaceObj.getDiameter());
     }
     
+    /**
+     * Adds a star to the the stars Array
+     * @param Star object to add
+     */
     public void addStar(Star star){
         stars.add(star);
     }
-    
+     /**
+     * Adds a planet to the the planet Array
+     * @param PLanet object to add
+     */
     public void addPlanet(Star star,Planet planet){
         planets.add(planet);
         star.addPlanet(planet);
     }
-    
+     /**
+     * Adds a blackHole to the the blackHole Array
+     * @param Star object to add
+     */
     public void addBlackHole(BlackHole bh){
         blackHoles.add(bh);
     }
-    
+     /**
+     * Adds a comet to the the comet Array
+     * @param Comet object to add
+     */
     public void addComet(Comet c){
         comets.add(c);
     }
     
+    /**
+     * Pauses the simulation
+     */
     public void pause(){
         paused = true;
     }
     
+    /**
+     * Resumes the simulation
+     */
     public void resume(){
         paused = false;
     }
     
+    /**
+     * Returns if the simulation is paused.
+     * @return boolean paused.
+     */
     public boolean isPaused(){
         return paused;
     }
     
+    /**
+     * Stops the simulation.
+     */
     public void finish(){
         done = true;
+    }
+    
+    
+    /**
+     * Saves the Space objects into a serializable class called MySpaceObjects.
+     * @param String file name of the save.
+     */
+    public void save(String filename){
+        // make a copy of all the space objects
+        MySpaceObjects save = new MySpaceObjects();
+        save.setComets(comets);
+        save.setPlanets(planets);
+        save.setStars(stars);
+        save.setBlackHoles(blackHoles);
+        //write object to file
+        SaveAndLoad.saveFile(save,filename);
+    }
+    
+    /**
+     * Loads a serialized file back into an object, then loads the data
+     * into the current universe.
+     * @param String filename of the file being loaded.
+     */
+    public void load(String filename){
+       //before we load we clear all objects off the screen
+       this.eraseAll(comets);
+       this.eraseAll(stars);
+       this.eraseAll(planets);
+       this.eraseAll(blackHoles);
+       //then load in the new ones and continue
+       MySpaceObjects save = SaveAndLoad.loadSpaceObjects(filename);
+       comets = save.getComets();
+       planets = save.getPlanets();
+       stars = save.getStars();
+       blackHoles = save.getBlackHoles();
     }
     
     
@@ -237,8 +321,9 @@ public class Universe
     * Erases all objects from an array from the canvas.
     * @param ArrayList of Space_Objects to remove.
     */
-    public void eraseAll(ArrayList<Space_Object> toRemove){
-        for(Space_Object spaceObj : toRemove){
+    public void eraseAll(ArrayList toRemove){
+        for(Object spaceObj1 : toRemove){
+            Space_Object spaceObj = (Space_Object) spaceObj1;
             universe.eraseCircle(spaceObj.getXPosition(), spaceObj.getYPosition(), spaceObj.getDiameter());
         }
     }

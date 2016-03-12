@@ -12,21 +12,21 @@ public class SaveAndLoad
         
     }
     
-    public static void saveUniverse(Universe uni,String path){
+    public static void saveFile(MySpaceObjects obj,String path){
         try{
         saveStream = new ObjectOutputStream(new FileOutputStream(path));
-        saveStream.writeObject(uni);
+        saveStream.writeObject(obj);
         saveStream.close();
        } catch(IOException e){
            e.printStackTrace();
        }
     }
     
-    public static Universe loadUniverse(String path){
-        Universe uni = null;
+    public static MySpaceObjects loadSpaceObjects(String path){
+        MySpaceObjects uni = null;
         try{
             loadStream = new ObjectInputStream(new FileInputStream(path));
-            uni = (Universe) loadStream.readObject();
+            uni = (MySpaceObjects) loadStream.readObject();
             loadStream.close();
         } catch (IOException e){
             e.printStackTrace();
