@@ -8,7 +8,7 @@ import java.util.Iterator;
  * @version 2016.1.22
  */
 
-public class Universe  
+public class Universe
 {
     private Canvas universe;
     private int leftEdge = 0;     // coordinates of the edges of the universe
@@ -21,25 +21,21 @@ public class Universe
     private ArrayList<Star> stars;
     private ArrayList<BlackHole> blackHoles;
     private ArrayList<Planet> planets;
-    private Interface myInterface;
     private boolean done = false;
-    private Color[] validColors = {Color.RED,Color.CYAN,Color.BLUE,Color.GRAY,Color.PINK,Color.GREEN};
 
     /**
      * Create a universe with default name and size. Creates a fresh canvas to display the universe
      */
     public Universe()
     {
-        universe = new Canvas("Universe Demo", 600, 500);
+        universe = new Canvas("Universe Simulation", 600, 500);
         rightEdge = 600;
         bottomEdge = 500;
         comets = new ArrayList<Comet>();
         stars = new ArrayList<Star>();
         blackHoles = new ArrayList<BlackHole>();
         planets = new ArrayList<Planet>();
-        
-        
-        myInterface = new Interface(this);
+       
         
         Star s1 = new Star(80,20,0,0,25,Color.YELLOW,this);
         stars.add(s1);
@@ -65,6 +61,7 @@ public class Universe
         this.rightEdge = rightEdge;
         this.bottomEdge = bottomEdge;
     }
+    
    
     /**
     *Main Loop, handles all collision detection and object updates.  
@@ -161,12 +158,6 @@ public class Universe
             
             this.eraseAll(removeB);
             blackHoles.removeAll(removeB);
-           
-            
-            
-            if(!myInterface.isFinished()){
-                myInterface.update();
-            }
         }
             
     }
@@ -202,9 +193,6 @@ public class Universe
         done = true;
     }
     
-    public Color[] getValidColors(){
-        return validColors;
-    }
     
     
     /**

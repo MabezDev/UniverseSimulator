@@ -44,12 +44,12 @@ public class CometOne extends Comet
     }
     
     /**
-    * Changes the color of the comet with random RGB values.
+    * Changes the color of the comet from a list of valid colors
     */
     public void randomiseColor(){
         if(Math.random() < 0.2){
-          int colorInt = rn.nextInt(this.universe.getValidColors().length - 1);
-          this.color = this.universe.getValidColors()[colorInt];
+          int colorInt = rn.nextInt(Interface.getValidColors().length - 1);
+          this.color = Interface.getValidColors()[colorInt];
         }
     }
     
