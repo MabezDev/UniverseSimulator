@@ -312,6 +312,10 @@ public class Universe
        this.eraseAll(blackHoles);
        //then load in the new ones and continue
        MySpaceObjects save = SaveAndLoad.loadSpaceObjects(filename);
+       if(save==null){
+           System.out.println("Failed to load universe from '"+filename+"'");
+           return;
+       }
        comets = save.getComets();
        planets = save.getPlanets();
        stars = save.getStars();

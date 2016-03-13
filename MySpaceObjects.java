@@ -10,7 +10,10 @@ public class MySpaceObjects implements Serializable
     private ArrayList<BlackHole> blackHoles;
     private ArrayList<Planet> planets;
     
-    private MySpaceObjects()
+    /**
+     * Empty Constructor.
+     */
+    public MySpaceObjects()
     {
         
     }
