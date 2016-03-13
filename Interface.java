@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.awt.*;
 
 /**
- * 
+ * Handles all input and handles the simulations on a separate thread.
  */
 public class Interface
 {
@@ -19,7 +19,7 @@ public class Interface
     
     
     /**
-     * Constructor for objects of class Interface
+     * Creates the CLI and initializes and controls the simulaation thread.
      */
     public Interface()
     {
@@ -42,6 +42,10 @@ public class Interface
         System.exit(0);
     }
     
+    /**
+     * Main Input Function
+     */
+    // NEED TO VALIDATE ALL INPUTS! TODO:
     public void update(){
         printMenu();
         while(scanner.hasNextLine()){
@@ -101,10 +105,17 @@ public class Interface
         }
     }
     
+    /**
+     * Returns a Color[] of valid colors
+     * @return A Color Array of valid colors
+     */
     public static Color[] getValidColors(){
         return validColors;
     }
     
+    /**
+     * Prints the possible CLI Options.
+     */
     private void printMenu(){
         System.out.println("1) Add new Comet.");
         System.out.println("2) Add new Star.");

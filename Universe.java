@@ -131,8 +131,11 @@ public class Universe
                                     c.destroy();
                                 }
                             }
-                        } else {
-                            //bounce of each other
+                        } else { // need testing
+                            c.setXSpeed(-1*c.getXSpeed());
+                            c.setYSpeed(-1*c.getYSpeed());
+                            c2.setXSpeed(-1*c2.getXSpeed());
+                            c2.setYSpeed(-1*c2.getYSpeed());
                         }
                     }
                 }

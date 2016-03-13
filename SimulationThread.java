@@ -1,9 +1,6 @@
 
 /**
- * Write a description of class GameThread here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
+ * Thread handler for the Universe class. 
  */
 public class SimulationThread implements Runnable
 {
@@ -14,12 +11,14 @@ public class SimulationThread implements Runnable
         universe = new Universe();
     }
     
-    
     @Override
     public void run(){
         universe.main();
     }
     
+    /**
+     * @return Returns the current Universe instance.
+     */
     public Universe getUniverse(){
         return universe;
     }
