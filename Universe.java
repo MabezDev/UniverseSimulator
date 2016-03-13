@@ -255,6 +255,13 @@ public class Universe
     }
     
     /**
+     * @return returns the arraylist of stars.
+     */
+    public ArrayList<Star> getStars(){
+        return stars;
+    }
+    
+    /**
      * Pauses the simulation
      */
     public void pause(){

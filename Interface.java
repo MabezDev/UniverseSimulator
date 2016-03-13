@@ -99,10 +99,21 @@ public class Interface
                             universe.addComet(new CometTwo(x,y,xVel,yVel,diameter,validColors[colorInt],universe));
                         }
                         break;
+                    } else if(choice==2){
+                        //add star
+                        universe.addStar(new Star(x,y,0,0,diameter,Color.YELLOW,universe));
+                    } else if(choice==3) {
+                        //list stars and choose one then attch the new plane to it
+                        // do some maths to make sure they cannot be near the edge.
+                        //universe.addPlanet(,new Planet(x,y,0,0,validColors[colorInt],universe));// need to list stars to attach planets to
+                        for(int j = 0; j < universe.getStars().size(); j++){
+                            System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
+                        }
+                        int starChoice = getValidInt(1,universe.getStars().size()) - 1;
+                        //fnish
+                    } else if(choice==4){
+                        universe.addBlackHole(new BlackHole(x,y,0,0,diameter,Color.BLACK,universe));
                     }
-                    /*
-                     * ADD OTHER OBJECTS!
-                     */
                 } 
           } 
         }
