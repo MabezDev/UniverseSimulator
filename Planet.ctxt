@@ -1,14 +1,14 @@
 #BlueJ class context
 comment0.params=xPos\ yPos\ xVel\ yVel\ objectDiameter\ objectColor\ theUniverse
 comment0.target=Planet(int,\ int,\ int,\ int,\ int,\ java.awt.Color,\ Universe)
-comment0.text=\n\ Constructor\ for\ objects\ of\ class\ Planet.\n\n\ @param\ xPos\ \ the\ horizontal\ coordinate\ of\ the\ object\n\ @param\ yPos\ \ the\ vertical\ coordinate\ of\ the\ object\n\ @param\ xVel\ \ the\ horizontal\ speed\ of\ the\ object\n\ @param\ yVel\ \ the\ vertical\ speed\ of\ the\ object\n\ @param\ objectDiameter\ \ the\ diameter\ (in\ pixels)\ of\ the\ object\n\ @param\ objectColor\ \ the\ color\ of\ the\ object\n\ @param\ theUniverse\ \ the\ universe\ this\ object\ is\ in\n
+comment0.text=\r\n\ Constructor\ for\ objects\ of\ class\ Planet.\r\n\r\n\ @param\ xPos\ \ the\ horizontal\ coordinate\ of\ the\ object\r\n\ @param\ yPos\ \ the\ vertical\ coordinate\ of\ the\ object\r\n\ @param\ xVel\ \ the\ horizontal\ speed\ of\ the\ object\r\n\ @param\ yVel\ \ the\ vertical\ speed\ of\ the\ object\r\n\ @param\ objectDiameter\ \ the\ diameter\ (in\ pixels)\ of\ the\ object\r\n\ @param\ objectColor\ \ the\ color\ of\ the\ object\r\n\ @param\ theUniverse\ \ the\ universe\ this\ object\ is\ in\r\n
 comment1.params=i
 comment1.target=void\ addToDiameter(int)
-comment1.text=\n\ \ Add\ to\ the\ diameter\ of\ the\ planet.\n\ \ @param\ the\ amount\ to\ add\ to\ the\ diameter.\n
+comment1.text=\r\n\ \ Add\ to\ the\ diameter\ of\ the\ planet.\r\n\ \ @param\ the\ amount\ to\ add\ to\ the\ diameter.\r\n
 comment2.params=
 comment2.target=void\ updateDegree()
-comment2.text=\n\ Updates\ the\ position\ around\ the\ oribt\ in\ degrees\ (1-\ 360).\ \n
+comment2.text=\r\n\ Updates\ the\ position\ around\ the\ oribt\ in\ degrees\ (1-\ 360).\ \r\n
 comment3.params=
 comment3.target=int\ getDegrees()
-comment3.text=\n\ Returns\ the\ current\ progress\ round\ the\ orbit\ in\ degrees.\n
+comment3.text=\r\n\ Returns\ the\ current\ progress\ round\ the\ orbit\ in\ degrees.\r\n
 numComments=4

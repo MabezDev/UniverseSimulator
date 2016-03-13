@@ -17,7 +17,7 @@ public class Universe
     private int topEdge = 0;
     private int rightEdge;
     private int bottomEdge;
-    private static int Area = 10;
+    private static int Area = 20;
     
     private ArrayList<Comet> comets;
     private ArrayList<Star> stars;
@@ -39,19 +39,6 @@ public class Universe
         stars = new ArrayList<Star>();
         blackHoles = new ArrayList<BlackHole>();
         planets = new ArrayList<Planet>();
-       
-        
-        Star s1 = new Star(80,20,0,0,25,Color.YELLOW,this);
-        stars.add(s1);
-        Planet p1 = new Planet(0,0,0,0,25,Color.GREEN,this);
-        planets.add(p1);
-        s1.addPlanet(p1);
-        
-        blackHoles.add(new BlackHole(300,250,0,0,25,Color.BLACK,this));
-        comets.add(new CometOne(100,300,2,2,25,Color.RED,this));
-        comets.add(new CometTwo(50,400,2,2,25,Color.RED,this));
-        
-        
     }
     
     /**
@@ -65,6 +52,10 @@ public class Universe
         universe = new Canvas(name, rightEdge, bottomEdge);
         this.rightEdge = rightEdge;
         this.bottomEdge = bottomEdge;
+        comets = new ArrayList<Comet>();
+        stars = new ArrayList<Star>();
+        blackHoles = new ArrayList<BlackHole>();
+        planets = new ArrayList<Planet>();
     }
     
    
@@ -117,25 +108,28 @@ public class Universe
                 }
                 
                 for(Comet c2 : comets){
-                    if((c.getXPosition() > c2.getXPosition()-c2.getDiameter()/2) && (c.getXPosition() < c2.getXPosition()+c2.getDiameter()/2) && 
-                    (c.getYPosition() > c2.getYPosition()-c2.getDiameter()/2) && (c.getYPosition() < c2.getYPosition()+c2.getDiameter()/2)){
-                        if(!c.getType().equals(c2.getType())){
-                            if(c.getDiameter() > c2.getDiameter()){
-                                c2.destroy();
-                            } else if(c.getDiameter() < c2.getDiameter()){
-                                c.destroy();
-                            } else {
-                                if((c.getXSpeed() > c2.getXSpeed()) && (c.getYSpeed() > c2.getYSpeed())){
+                    if(!c.equals(c2)){//make sure were not comparing a comet against itself
+                        if((c.getXPosition() > c2.getXPosition()-c2.getDiameter()/2) && (c.getXPosition() < c2.getXPosition()+c2.getDiameter()/2) && 
+                        (c.getYPosition() > c2.getYPosition()-c2.getDiameter()/2) && (c.getYPosition() < c2.getYPosition()+c2.getDiameter()/2)){
+                            if(!c.getType().equals(c2.getType())){
+                                if(c.getDiameter() > c2.getDiameter()){
                                     c2.destroy();
-                                } else if((c.getXSpeed() < c2.getXSpeed()) && (c.getYSpeed() < c2.getYSpeed())) {
+                                } else if(c.getDiameter() < c2.getDiameter()){
                                     c.destroy();
+                                } else {
+                                    if((c.getXSpeed() > c2.getXSpeed()) && (c.getYSpeed() > c2.getYSpeed())){
+                                        c2.destroy();
+                                    } else if((c.getXSpeed() < c2.getXSpeed()) && (c.getYSpeed() < c2.getYSpeed())) {
+                                        c.destroy();
+                                    }
                                 }
+                            } else {
+                                //flip all velocities
+                                c.setXSpeed(-1*c.getXSpeed());
+                                c.setYSpeed(-1*c.getYSpeed());
+                                c2.setXSpeed(-1*c2.getXSpeed());
+                                c2.setYSpeed(-1*c2.getYSpeed());
                             }
-                        } else { // need testing
-                            c.setXSpeed(-1*c.getXSpeed());
-                            c.setYSpeed(-1*c.getYSpeed());
-                            c2.setXSpeed(-1*c2.getXSpeed());
-                            c2.setYSpeed(-1*c2.getYSpeed());
                         }
                     }
                 }
@@ -329,7 +323,16 @@ public class Universe
        blackHoles = save.getBlackHoles();
     }
     
-    
+    public void reset(){
+       this.eraseAll(comets);
+       this.eraseAll(stars);
+       this.eraseAll(planets);
+       this.eraseAll(blackHoles);
+       comets.clear();
+       stars.clear();
+       planets.clear();
+       blackHoles.clear();
+    }
     
     /**
     * Erases all objects from an array from the canvas.
