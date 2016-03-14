@@ -57,10 +57,16 @@ public class Space_Object implements Serializable
         
     }
     
+    /**
+     * Default constructor for Space_Object.
+     */
     public Space_Object (){
         groundPosition = 0;
     }
     
+    /**
+     * Gives the is object the universe variable to draw itself.
+     */
     public void addUniverse(Universe uni){
         this.universe = uni;
     }
@@ -121,6 +127,13 @@ public class Space_Object implements Serializable
         if(lifeTime <= 0){
             destroyed = true;
         }
+    }
+    
+    /**
+     * Returns the current life left. 
+     */
+    public int getLife(){
+       return lifeTime;
     }
     
     /**

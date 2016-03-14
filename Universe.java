@@ -65,128 +65,143 @@ public class Universe
     public void main(){
         while(done == false){
             if(!paused){
-            universe.wait(50);
+                universe.wait(50);//simulate time
+                
+                ArrayList removeC = new ArrayList();
+                ArrayList removeP = new ArrayList();
+                ArrayList removeB = new ArrayList();
+                ArrayList removeS = new ArrayList();
                
-            ArrayList removeC = new ArrayList();
-            ArrayList removeP = new ArrayList();
-            ArrayList removeB = new ArrayList();
-            ArrayList removeS = new ArrayList();
-            
-            
-            for(Comet c : comets){
-                c.move();
-                c.updateLife();
-                //only comets can collide so well do the processing here
-                for(Star star: stars){
-                    if((c.getXPosition() + star.getDiameter()/2 + c.getDiameter()/2 > star.getXPosition()) && (c.getXPosition() < star.getXPosition()+star.getDiameter()/2 + c.getDiameter()/2) && 
-                    (c.getYPosition() +star.getDiameter()/2 + c.getDiameter()/2 > star.getYPosition()) && (c.getYPosition() < star.getYPosition()+star.getDiameter()/2 + c.getDiameter()/2)){
-                        star.addLife((int) Math.PI * (c.getDiameter()/2*c.getDiameter()/2));
-                        c.destroy();
-                    }
-                }
-                
-                for(Planet planet: planets){
-                     if((c.getXPosition() + planet.getDiameter()/2 + c.getDiameter()/2 > planet.getXPosition()) && (c.getXPosition() < planet.getXPosition()+planet.getDiameter()/2 + c.getDiameter()/2) && 
-                     (c.getYPosition() +planet.getDiameter()/2 + c.getDiameter()/2 > planet.getYPosition()) && (c.getYPosition() < planet.getYPosition()+planet.getDiameter()/2 + c.getDiameter()/2)){
-                        planet.addToDiameter(c.getDiameter()/4);// planet radius simplifies to current radius plus comets.  
-                        c.destroy();
-                    }
-                }
-                
-                for(BlackHole blackHole: blackHoles){
-                    if((c.getXPosition() > blackHole.getXPosition()-blackHole.getDiameter() - Area) && (c.getXPosition() < blackHole.getXPosition()+blackHole.getDiameter() + Area) && 
-                    (c.getYPosition() > blackHole.getYPosition()-blackHole.getDiameter() - Area) && (c.getYPosition() < blackHole.getYPosition()+blackHole.getDiameter() + Area)){
-                        //move the comet closer
-                        c.setXSpeed((blackHole.getXPosition() - c.getXPosition())/4);
-                        c.setYSpeed((blackHole.getYPosition() - c.getYPosition())/4);
-                        //check if its been completely sucked in
-                        if((c.getXPosition() > blackHole.getXPosition() - 5) && (c.getXPosition() < blackHole.getXPosition()+5) && 
-                        (c.getYPosition() > blackHole.getYPosition() - 5) && (c.getYPosition() < blackHole.getYPosition() + 5)){
+                for(Comet c : comets){
+                    c.move();
+                    c.updateLife();
+                    //only comets can collide so well do the processing here
+                    for(Star star: stars){
+                        if(isColliding(c,star)){
+                            star.addLife((int) Math.PI * (c.getDiameter()/2*c.getDiameter()/2));
                             c.destroy();
                         }
                     }
-                }
-                
-                for(Comet c2 : comets){
-                    if(!c.equals(c2)){//make sure were not comparing a comet against itself
-                        if((c.getXPosition() > c2.getXPosition()-c2.getDiameter()/2) && (c.getXPosition() < c2.getXPosition()+c2.getDiameter()/2) && 
-                        (c.getYPosition() > c2.getYPosition()-c2.getDiameter()/2) && (c.getYPosition() < c2.getYPosition()+c2.getDiameter()/2)){
-                            if(!c.getType().equals(c2.getType())){
-                                if(c.getDiameter() > c2.getDiameter()){
-                                    c2.destroy();
-                                } else if(c.getDiameter() < c2.getDiameter()){
-                                    c.destroy();
-                                } else {
-                                    if( Math.sqrt((c.getXSpeed()*c.getXSpeed()) + (c.getYSpeed()*c.getYSpeed())) > Math.sqrt((c2.getXSpeed()*c2.getXSpeed()) + (c2.getYSpeed()*c2.getYSpeed())) ){ //use pythag to get resultant speed
-                                        c2.destroy();
-                                    } else {
-                                        c.destroy();
-                                    }
-                                }
-                            } else {
-                                //flip all velocities
-                                c.setXSpeed(-1*c.getXSpeed());
-                                c.setYSpeed(-1*c.getYSpeed());
-                                c2.setXSpeed(-1*c2.getXSpeed());
-                                c2.setYSpeed(-1*c2.getYSpeed());
+                    
+                    for(Planet planet: planets){
+                         if(isColliding(c,planet)){
+                            planet.addToDiameter(c.getDiameter()/4);// planet radius simplifies to current radius plus comets.  
+                            c.destroy();
+                        }
+                    }
+                    
+                    //cant use isColliding here due to the way ive implemented blackholes
+                    for(BlackHole blackHole: blackHoles){
+                        if((c.getXPosition() > blackHole.getXPosition()-blackHole.getDiameter() - Area) && (c.getXPosition() < blackHole.getXPosition()+blackHole.getDiameter() + Area) && 
+                        (c.getYPosition() > blackHole.getYPosition()-blackHole.getDiameter() - Area) && (c.getYPosition() < blackHole.getYPosition()+blackHole.getDiameter() + Area)){
+                            //move the comet closer
+                            c.setXSpeed((blackHole.getXPosition() - c.getXPosition())/4);
+                            c.setYSpeed((blackHole.getYPosition() - c.getYPosition())/4);
+                            //check if its been completely sucked in
+                            if((c.getXPosition() > blackHole.getXPosition() - 5) && (c.getXPosition() < blackHole.getXPosition()+5) && 
+                            (c.getYPosition() > blackHole.getYPosition() - 5) && (c.getYPosition() < blackHole.getYPosition() + 5)){
+                                c.destroy();
                             }
                         }
                     }
+                    
+                    for(Comet c2 : comets){
+                        if(!c.equals(c2)){//make sure were not comparing a comet against itself
+                            if(isColliding(c,c2)){
+                                if(!c.getType().equals(c2.getType())){
+                                    if(c.getDiameter() > c2.getDiameter()){
+                                        c2.destroy();
+                                    } else if(c.getDiameter() < c2.getDiameter()){
+                                        c.destroy();
+                                    } else {
+                                        if( Math.sqrt((c.getXSpeed()*c.getXSpeed()) + (c.getYSpeed()*c.getYSpeed())) > Math.sqrt((c2.getXSpeed()*c2.getXSpeed()) + (c2.getYSpeed()*c2.getYSpeed())) ){ //use pythag to get resultant speed
+                                            c2.destroy();
+                                        } else if( Math.sqrt((c.getXSpeed()*c.getXSpeed()) + (c.getYSpeed()*c.getYSpeed())) < Math.sqrt((c2.getXSpeed()*c2.getXSpeed()) + (c2.getYSpeed()*c2.getYSpeed())) ) {
+                                            c.destroy();
+                                        } else {
+                                            c.destroy();
+                                            c2.destroy();
+                                        }
+                                    }
+                                } else {
+                                    //flip all velocities
+                                    c.setXSpeed(-1*c.getXSpeed());
+                                    c.setYSpeed(-1*c.getYSpeed());
+                                    c2.setXSpeed(-1*c2.getXSpeed());
+                                    c2.setYSpeed(-1*c2.getYSpeed());
+                                }
+                            }
+                        }
+                    }
+                    
+                    if(c.isDestroyed()){
+                        removeC.add(c);
+                    }
                 }
-                
-                if(c.isDestroyed()){
-                    removeC.add(c);
-                }
-           }
-           
-           for(Star star: stars){
-               this.draw(star);
-               star.updateLife();
-               star.updateSubObjects();//updates it surrounding planets
-               if(star.isDestroyed()){
+               
+                for(Star star: stars){
+                    this.draw(star);
+                    star.updateLife();
+                    star.updateSubObjects();//updates it surrounding planets
+                    if(star.isDestroyed()){
                         removeS.add(star);
-               }
-           }
-           
-           for(BlackHole blackHole: blackHoles){
-               this.draw(blackHole);
-               blackHole.updateLife();
-               if(blackHole.isDestroyed()){
-                        removeB.add(blackHole);
-               }
-           }
-           
-           for(Planet planet: planets){
-               planet.updateLife();
-               if(planet.isDestroyed()){
-                   removeP.add(planet);
-               }
-           }
-           
-           
-           this.eraseAll(removeC);
-           comets.removeAll(removeC);
-            
-           this.eraseAll(removeS);
-           stars.removeAll(removeS);
-            
-           this.eraseAll(removeP);
-           planets.removeAll(removeP);
-            
-           this.eraseAll(removeB);
-           blackHoles.removeAll(removeB);
-            
-            
-        } else {
-            try{
-                Thread.sleep(10);
-            } catch (Exception e){
+                    }
+                }
+               
+                for(BlackHole blackHole: blackHoles){
+                   this.draw(blackHole);
+                   blackHole.updateLife();
+                   if(blackHole.isDestroyed()){
+                            removeB.add(blackHole);
+                   }
+                }
+               
+                for(Planet planet: planets){
+                   planet.updateLife();
+                   if(planet.isDestroyed()){
+                       removeP.add(planet);
+                   }
+                }
+               
+                //remove the destoyed objects
+                this.eraseAll(removeC);
+                comets.removeAll(removeC);
                 
+                this.eraseAll(removeS);
+                stars.removeAll(removeS);
+                
+                this.eraseAll(removeP);
+                planets.removeAll(removeP);
+                
+                this.eraseAll(removeB);
+                blackHoles.removeAll(removeB);
+            } else {
+                try{
+                    Thread.sleep(10);
+                } catch (Exception e){
+                    
+                }
             }
+        }       
+    }
+    
+    /**
+     * A method that returns whether two Space_Objects are colliding.
+     * This algorithm is based of the idea of collision box.
+     * Not the most accurate collision detection but very cheap and fast to excecute.
+     * @param The first Space_Object
+     * @param The second Space_Object
+     * @return Returns a boolean value depending on whether the two objects are colliding. 
+     */
+    private boolean isColliding(Space_Object a, Space_Object b){
+        if((a.getXPosition() + b.getDiameter()/2 + a.getDiameter()/2 > b.getXPosition()) && (a.getXPosition() < b.getXPosition()+b.getDiameter()/2 + a.getDiameter()/2) && 
+        (a.getYPosition() +b.getDiameter()/2 + a.getDiameter()/2 > b.getYPosition()) && (a.getYPosition() < b.getYPosition()+b.getDiameter()/2 + a.getDiameter()/2)){
+            return true;
+        } else {
+            return false;
         }
     }
-            
-    }
+    
     
     /**
      * Used when loading in new Space Objects to give them a universe to exist in.
@@ -227,7 +242,7 @@ public class Universe
     }
      /**
      * Adds a planet to the the planet Array
-     * @param PLanet object to add
+     * @param Planet object to add
      */
     public void addPlanet(Star star,Planet planet){
         planets.add(planet);
@@ -235,7 +250,7 @@ public class Universe
     }
      /**
      * Adds a blackHole to the the blackHole Array
-     * @param Star object to add
+     * @param BlackHole object to add
      */
     public void addBlackHole(BlackHole bh){
         blackHoles.add(bh);
@@ -249,7 +264,7 @@ public class Universe
     }
     
     /**
-     * @return returns the arraylist of stars.
+     * Returns the arraylist of stars.
      */
     public ArrayList<Star> getStars(){
         return stars;
@@ -323,6 +338,10 @@ public class Universe
        blackHoles = save.getBlackHoles();
     }
     
+    
+    /**
+     * Resets the Universe by undrawing all items and clearing the arrays.
+     */
     public void reset(){
        this.eraseAll(comets);
        this.eraseAll(stars);

@@ -19,6 +19,9 @@ public class BlackHole extends Space_Object
        super(xPos,yPos,xVel,yVel,objectDiameter, objectColor, theUniverse);
     }
     
+    /**
+     * Default Constructor.
+     */
     public BlackHole(){
     }
 

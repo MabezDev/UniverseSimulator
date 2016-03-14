@@ -1,6 +1,7 @@
 #BlueJ class context
 comment0.params=
 comment0.target=SimulationThread()
+comment0.text=\r\n\ Create\ a\ single\ Universe\ instance\ on\ a\ new\ Thread.\r\n
 comment1.params=
 comment1.target=void\ run()
 comment2.params=

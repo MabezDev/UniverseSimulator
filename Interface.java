@@ -19,7 +19,7 @@ public class Interface
     private boolean cancelled = false;
     
     /**
-     * Creates the CLI and initializes and controls the simulaation thread.
+     * Creates the CLI and initializes and controls the simulation thread.
      */
     public Interface()
     {
@@ -28,6 +28,9 @@ public class Interface
         simulator = new Thread(gt);
         universe = gt.getUniverse();
         simulator.start();
+        System.out.println("");
+        System.out.println("Typing cancel at anytime will bring you back to the menu!");
+        System.out.println("");
         while(!done){
             update();
         }
@@ -60,7 +63,7 @@ public class Interface
                     break;
                 } else if(choice==6){
                     System.out.println("Enter the name of the file to save: ");    
-                    String path = scanner.next();
+                    String path = getString();
                     universe.save(SAVES_PATH+path);
                     break;
                 }else if(choice==7){
@@ -83,6 +86,7 @@ public class Interface
                             Color cPlanet = getValidColor();
                             System.out.println("Enter the diameter: ");
                             int diameterPlanet = getInt();
+                            System.out.println("Choose a star to orbit: ");
                             for(int j = 0; j < universe.getStars().size(); j++){
                                 System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
                             }
@@ -90,7 +94,7 @@ public class Interface
                             universe.addPlanet(universe.getStars().get(starChoice),new Planet(0,0,speed,0,diameterPlanet,cPlanet,universe));
                             break;
                         } else {
-                            System.out.println("Cannot add planet without a star to orbit.");
+                            System.out.println("Cannot add Planet, no Star to orbit.");
                             break;
                         }
                 } else {
@@ -130,9 +134,15 @@ public class Interface
         }
     }
     
+    /**
+     * A Custom Exception class for breaking out of the input loop.
+     */
     public class CancellationException extends Exception{ 
     }
     
+    /**
+     * Returns a valid Integer between a given min and max unless cancel is entered.
+     */
     private int getValidInt(int min, int max) throws CancellationException{
         boolean got = false;
         int t = 0;
@@ -147,6 +157,9 @@ public class Interface
         return t;
     }
     
+    /**
+     * Returns a valid Color from the static array of valid colors unless cancel is entered.
+     */
     private Color getValidColor() throws CancellationException{
         System.out.println("Enter a valid color from the list: ");
         System.out.println("1) Red.");
@@ -159,17 +172,40 @@ public class Interface
         return validColors[colorInt];
     }
     
+    
+    /**
+     * Returns a string unless cancel is entered.
+     */
+    private String getString() throws CancellationException{
+        String temp = "DEFAULT.sav";
+        while(scanner.hasNext()){
+            temp = scanner.next();
+            if(temp.equals("cancel")){
+                throw new CancellationException();
+            } else {
+                break;
+            }
+        }
+        return temp;
+    }
+    /**
+     * Returns an int unless cancel is entered.
+     */
     private int getInt() throws CancellationException{
         while(!scanner.hasNextInt()){
             String temp = scanner.next();
             if(temp.equals("cancel")){
                 throw new CancellationException();
             }
-            System.out.println("Enter an integer!");
+            System.out.println("Enter an integer or type cancel!");
+            System.out.print(">>> ");
         }
         return scanner.nextInt();
     }
     
+    /**
+     * Returns the name of a file entered, unless cancel is entered.
+     */
     private String getValidSave() throws CancellationException{
         System.out.println("Choose a file to load: ");
         File folder = new File(SAVES_PATH);
@@ -197,11 +233,17 @@ public class Interface
         System.out.println("2) Add new Star.");
         System.out.println("3) Add new Planet.");
         System.out.println("4) Add new BlackHole.");
-        System.out.println("5) Resume/Pause Simulation.");
+        if(universe.isPaused()){
+            System.out.println("5) Resume Simulation.");
+        } else {
+            System.out.println("5) Pause Simulation.");
+        }
+        
         System.out.println("6) Save current Universe.");
         System.out.println("7) Load a Universe.");
         System.out.println("8) Reset current universe.");
         System.out.println("9) Exit.");
+        System.out.print(">>> ");
     }
 
 }

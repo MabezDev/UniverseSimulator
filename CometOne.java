@@ -1,7 +1,9 @@
 import java.awt.*;
 import java.util.Random;
 
-
+/**
+ * Creates Comet type Seven
+ */
 public class CometOne extends Comet
 {
     private int minSpeed = 1;
