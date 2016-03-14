@@ -16,7 +16,7 @@ public class Interface
     private Canvas canvas;
     private static Color[] validColors = {Color.RED,Color.CYAN,Color.BLUE,Color.GRAY,Color.PINK,Color.GREEN};
     private static final String SAVES_PATH = "saves/";
-    
+    private boolean cancelled = false;
     
     /**
      * Creates the CLI and initializes and controls the simulaation thread.
@@ -47,79 +47,93 @@ public class Interface
      */
     public void update(){
         printMenu();
+        mainLoop:
         while(scanner.hasNextLine()){
-            int choice = getValidInt(1,10);
-            if(choice==5){
-                universe.resume();
-                break;
-            } else if(choice==6){
-                universe.pause();
-                break;
-            } else if(choice==7){
-               //save current universe
-                String path = scanner.next();
-                universe.save(SAVES_PATH+path);
-                break;
-            }else if(choice==8){
-                //load a universe
-                String path2 = getValidSave();
-                universe.load(SAVES_PATH+path2);
-                universe.applyUniverse();
-                break; 
-            } else if(choice==9){
-                universe.reset();
-            }else if(choice==10){
-                finish();
-            } else if(choice==3) {
-                    //list stars and choose one then attach the new plane to it
-                    // do some maths to make sure they cannot be near the edge.
-                    if(universe.getStars().size() > 0){
-                        Color cPlanet = getValidColor();
-                        System.out.println("Enter the diameter: ");
-                        int diameterPlanet = getInt();
-                        for(int j = 0; j < universe.getStars().size(); j++){
-                            System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
+            try{
+                int choice = getValidInt(1,9);
+                if(choice==5){
+                    if(universe.isPaused()){
+                        universe.resume();
+                    } else {
+                        universe.pause();
+                    }
+                    break;
+                } else if(choice==6){
+                    System.out.println("Enter the name of the file to save: ");    
+                    String path = scanner.next();
+                    universe.save(SAVES_PATH+path);
+                    break;
+                }else if(choice==7){
+                    //load a universe
+                    String path2 = getValidSave();
+                    universe.load(SAVES_PATH+path2);
+                    universe.applyUniverse();
+                    break; 
+                } else if(choice==8){
+                    universe.reset();
+                    break;
+                }else if(choice==9){
+                    finish();
+                } else if(choice==3) {
+                        //list stars and choose one then attach the new plane to it
+                        // do some maths to make sure they cannot be near the edge.
+                        if(universe.getStars().size() > 0){
+                            System.out.println("Enter a speed between 1 and 50: ");
+                            int speed = getValidInt(1,50);
+                            Color cPlanet = getValidColor();
+                            System.out.println("Enter the diameter: ");
+                            int diameterPlanet = getInt();
+                            for(int j = 0; j < universe.getStars().size(); j++){
+                                System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
+                            }
+                            int starChoice = getValidInt(1,universe.getStars().size()) - 1;
+                            universe.addPlanet(universe.getStars().get(starChoice),new Planet(0,0,speed,0,diameterPlanet,cPlanet,universe));
+                            break;
+                        } else {
+                            System.out.println("Cannot add planet without a star to orbit.");
+                            break;
                         }
-                        int starChoice = getValidInt(1,universe.getStars().size()) - 1;
-                        universe.addPlanet(universe.getStars().get(starChoice),new Planet(0,0,0,0,diameterPlanet,cPlanet,universe));
+                } else {
+                    System.out.println("Enter x: ");
+                    int x = getValidInt(0,universe.getLength());
+                    System.out.println("Enter y: ");
+                    int y = getValidInt(0,universe.getGround());
+                    System.out.println("Enter the diameter: ");
+                    int diameter = getValidInt(0,1000);
+                    if(choice==1){
+                        System.out.println("Enter x velocity: ");
+                        int xVel = getInt();
+                        System.out.println("Enter y velocity: ");
+                        int yVel = getInt();
+                        Color c = getValidColor();
+                        System.out.println("Which comet type, 1, 2 or A default(3): ");
+                        int type = getValidInt(1,3);
+                        if(type==1){
+                            universe.addComet(new CometOne(x,y,xVel,yVel,diameter,c,universe));
+                        } else if(type==2){
+                            universe.addComet(new CometTwo(x,y,xVel,yVel,diameter,c,universe));
+                        } else if(type==3){
+                            universe.addComet(new Comet(x,y,xVel,yVel,diameter,c,universe));
+                        }
                         break;
-                    } else {
-                        System.out.println("Cannot add planet without a star to orbit.");
+                    } else if(choice==2){
+                        universe.addStar(new Star(x,y,0,0,diameter,Color.YELLOW,universe));
+                        break;
+                    } else if(choice==4){
+                        universe.addBlackHole(new BlackHole(x,y,0,0,diameter,Color.BLACK,universe));
                         break;
                     }
-            } else {
-                System.out.println("Enter x: ");
-                int x = getValidInt(0,universe.getLength());
-                System.out.println("Enter y: ");
-                int y = getValidInt(0,universe.getGround());
-                System.out.println("Enter the diameter: ");
-                int diameter = getValidInt(0,1000);
-                if(choice==1){
-                    System.out.println("Enter x velocity: ");
-                    int xVel = getInt();
-                    System.out.println("Enter y velocity: ");
-                    int yVel = getInt();
-                    System.out.println("Which comet type, 1 or 2: ");
-                    int type = getValidInt(1,2);
-                    Color c = getValidColor();
-                    if(type==1){
-                        universe.addComet(new CometOne(x,y,xVel,yVel,diameter,c,universe));
-                    } else {
-                        universe.addComet(new CometTwo(x,y,xVel,yVel,diameter,c,universe));
-                    }
-                    break;
-                } else if(choice==2){
-                    universe.addStar(new Star(x,y,0,0,diameter,Color.YELLOW,universe));
-                    break;
-                } else if(choice==4){
-                    universe.addBlackHole(new BlackHole(x,y,0,0,diameter,Color.BLACK,universe));
-                    break;
-                }
-            } 
+                } 
+            } catch (CancellationException c){
+                break mainLoop;
+            }
         }
     }
     
-    private int getValidInt(int min, int max){
+    public class CancellationException extends Exception{ 
+    }
+    
+    private int getValidInt(int min, int max) throws CancellationException{
         boolean got = false;
         int t = 0;
         while(!got){
@@ -133,24 +147,30 @@ public class Interface
         return t;
     }
     
-    private Color getValidColor(){
+    private Color getValidColor() throws CancellationException{
         System.out.println("Enter a valid color from the list: ");
-        for(int i = 0; i < validColors.length;i++){
-            System.out.println((i+1)+") "+ validColors[i].toString());
-        }
+        System.out.println("1) Red.");
+        System.out.println("2) Cyan.");
+        System.out.println("3) Blue.");
+        System.out.println("4) Gray.");
+        System.out.println("5) Pink.");
+        System.out.println("6) Green.");
         int colorInt = getValidInt(1,validColors.length) - 1;
         return validColors[colorInt];
     }
     
-    private int getInt(){
+    private int getInt() throws CancellationException{
         while(!scanner.hasNextInt()){
-            scanner.next();
+            String temp = scanner.next();
+            if(temp.equals("cancel")){
+                throw new CancellationException();
+            }
             System.out.println("Enter an integer!");
         }
         return scanner.nextInt();
     }
     
-    private String getValidSave(){
+    private String getValidSave() throws CancellationException{
         System.out.println("Choose a file to load: ");
         File folder = new File(SAVES_PATH);
         File[] files = folder.listFiles();
@@ -177,12 +197,11 @@ public class Interface
         System.out.println("2) Add new Star.");
         System.out.println("3) Add new Planet.");
         System.out.println("4) Add new BlackHole.");
-        System.out.println("5) Resume Simulation.");
-        System.out.println("6) Pause Simulation.");
-        System.out.println("7) Save current Universe.");
-        System.out.println("8) Load a Universe.");
-        System.out.println("9) Reset current universe.");
-        System.out.println("10) Exit.");
+        System.out.println("5) Resume/Pause Simulation.");
+        System.out.println("6) Save current Universe.");
+        System.out.println("7) Load a Universe.");
+        System.out.println("8) Reset current universe.");
+        System.out.println("9) Exit.");
     }
 
 }

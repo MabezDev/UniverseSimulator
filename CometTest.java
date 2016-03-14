@@ -44,8 +44,9 @@ public class CometTest
     
     @Test
     public void typeTest(){
-        comet1.getType().equals("SEVEN");
-        comet2.getType().equals("SIX");
+        assertEquals(comet1.getType(),"SEVEN");
+        assertEquals(comet2.getType(),"SIX");
+        
     }
 }
 

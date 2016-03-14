@@ -41,8 +41,26 @@ public class StarTest
     
     @Test
     public void removeLife(){
+        //check if the objects life is successfully removed
+        int initial = star.getLife();
+        star.updateLife();
+        assertTrue(star.getLife() < initial);
+    }
+    
+    @Test 
+    public void addLife(){
         int initial = star.getLife();
         star.addLife(100);
-        if(star.getLife() < initial);
+        assertTrue(star.getLife() > initial);
+    }
+    
+    @Test
+    public void canDie(){
+        //simulate time passing nad the star dying
+        while(!star.isDestroyed()){
+            star.updateLife();
+        }
+        //check the destroyed flag is true
+        assertTrue(star.isDestroyed());
     }
 }

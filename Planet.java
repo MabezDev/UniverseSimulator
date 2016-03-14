@@ -4,6 +4,7 @@ import java.awt.*;
 public class Planet extends Space_Object
 {
     private int degrees;
+    private int speed;
     
    /**
    * Constructor for objects of class Planet.
@@ -20,6 +21,7 @@ public class Planet extends Space_Object
    {
       super(xPos,yPos,xVel,yVel,objectDiameter, objectColor, theUniverse); 
       degrees = 1;
+      speed = xVel;
    }
     
    /**
@@ -34,7 +36,7 @@ public class Planet extends Space_Object
    * Updates the position around the oribt in degrees (1- 360). 
    */
    public void updateDegree(){
-       degrees +=2;
+       degrees +=speed;
        if(degrees > 360){
            degrees = 1;
        }

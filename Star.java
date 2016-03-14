@@ -29,7 +29,7 @@ public class Star extends Space_Object
     public void updateSubObjects(){
         for(Planet p : planets){
             p.updateDegree();
-            int[] t = getPointOnCircle(p.getDegrees(),p.getDiameter()*2,this.getXPosition(),this.getYPosition());//p.dimater *2 is distance from star going around
+            int[] t = getPointOnCircle(p.getDegrees(),(int)(p.getDiameter()*2),this.getXPosition() + this.getDiameter()/2 - p.getDiameter()/2,this.getYPosition() + this.getDiameter()/2 - p.getDiameter()/2);//p.dimater *2 is distance from star going around
             p.move(t[0],t[1]);
         }
     }

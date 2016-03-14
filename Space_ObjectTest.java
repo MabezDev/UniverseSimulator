@@ -43,13 +43,12 @@ public class Space_ObjectTest
     @Test
     public void getSpeed()
     {
-        if(testObject.getXSpeed()==2);
-        if(testObject.getYSpeed()==-4);
+        assertTrue(testObject.getXSpeed()==2 && testObject.getYSpeed()==-4);
     }
     
     @Test
     public void getSize(){
-        if(testObject.getDiameter() > 0);
+        assertTrue(testObject.getDiameter() > 0);
     }
 }
 

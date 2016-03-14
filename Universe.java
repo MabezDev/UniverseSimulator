@@ -80,7 +80,7 @@ public class Universe
                 for(Star star: stars){
                     if((c.getXPosition() + star.getDiameter()/2 + c.getDiameter()/2 > star.getXPosition()) && (c.getXPosition() < star.getXPosition()+star.getDiameter()/2 + c.getDiameter()/2) && 
                     (c.getYPosition() +star.getDiameter()/2 + c.getDiameter()/2 > star.getYPosition()) && (c.getYPosition() < star.getYPosition()+star.getDiameter()/2 + c.getDiameter()/2)){
-                        star.addLife((int) Math.PI * c.getDiameter()/2);
+                        star.addLife((int) Math.PI * (c.getDiameter()/2*c.getDiameter()/2));
                         c.destroy();
                     }
                 }
@@ -88,7 +88,7 @@ public class Universe
                 for(Planet planet: planets){
                      if((c.getXPosition() + planet.getDiameter()/2 + c.getDiameter()/2 > planet.getXPosition()) && (c.getXPosition() < planet.getXPosition()+planet.getDiameter()/2 + c.getDiameter()/2) && 
                      (c.getYPosition() +planet.getDiameter()/2 + c.getDiameter()/2 > planet.getYPosition()) && (c.getYPosition() < planet.getYPosition()+planet.getDiameter()/2 + c.getDiameter()/2)){
-                        planet.addToDiameter(c.getDiameter()/2);
+                        planet.addToDiameter(c.getDiameter()/4);// planet radius simplifies to current radius plus comets.  
                         c.destroy();
                     }
                 }
@@ -117,9 +117,9 @@ public class Universe
                                 } else if(c.getDiameter() < c2.getDiameter()){
                                     c.destroy();
                                 } else {
-                                    if((c.getXSpeed() > c2.getXSpeed()) && (c.getYSpeed() > c2.getYSpeed())){
+                                    if( Math.sqrt((c.getXSpeed()*c.getXSpeed()) + (c.getYSpeed()*c.getYSpeed())) > Math.sqrt((c2.getXSpeed()*c2.getXSpeed()) + (c2.getYSpeed()*c2.getYSpeed())) ){ //use pythag to get resultant speed
                                         c2.destroy();
-                                    } else if((c.getXSpeed() < c2.getXSpeed()) && (c.getYSpeed() < c2.getYSpeed())) {
+                                    } else {
                                         c.destroy();
                                     }
                                 }
