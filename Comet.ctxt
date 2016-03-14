@@ -3,5 +3,5 @@ comment0.params=xPos\ yPos\ xVel\ yVel\ objectDiameter\ objectColor\ theUniverse
 comment0.target=Comet(int,\ int,\ int,\ int,\ int,\ java.awt.Color,\ Universe)
 comment1.params=
 comment1.target=java.lang.String\ getType()
-comment1.text=\n\ A\ method\ that\ returns\ the\ type\ of\ comet.\ \n
+comment1.text=\r\n\ A\ method\ that\ returns\ the\ type\ of\ comet.\ \r\n
 numComments=2

@@ -59,6 +59,10 @@ public class Star extends Space_Object
         lifeTime += i;
    }
    
+   public int getLife(){
+       return lifeTime;
+   }
+   
    /**
    *  Attatches a planet to this star from here the planet will orbit the star.
    *  @param the planet object to add.

@@ -5,5 +5,5 @@ comment1.params=
 comment1.target=void\ run()
 comment2.params=
 comment2.target=Universe\ getUniverse()
-comment2.text=\n\ @return\ Returns\ the\ current\ Universe\ instance.\n
+comment2.text=\r\n\ @return\ Returns\ the\ current\ Universe\ instance.\r\n
 numComments=3

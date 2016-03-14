@@ -73,22 +73,27 @@ public class Interface
             } else if(choice==3) {
                     //list stars and choose one then attach the new plane to it
                     // do some maths to make sure they cannot be near the edge.
-                    Color cPlanet = getValidColor();
-                    System.out.println("Enter the diameter: ");
-                    int diameterPlanet = getInt();
-                    for(int j = 0; j < universe.getStars().size(); j++){
-                        System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
+                    if(universe.getStars().size() > 0){
+                        Color cPlanet = getValidColor();
+                        System.out.println("Enter the diameter: ");
+                        int diameterPlanet = getInt();
+                        for(int j = 0; j < universe.getStars().size(); j++){
+                            System.out.println((j+1)+") Star at : ("+universe.getStars().get(j).getXPosition()+","+universe.getStars().get(j).getYPosition()+")");
+                        }
+                        int starChoice = getValidInt(1,universe.getStars().size()) - 1;
+                        universe.addPlanet(universe.getStars().get(starChoice),new Planet(0,0,0,0,diameterPlanet,cPlanet,universe));
+                        break;
+                    } else {
+                        System.out.println("Cannot add planet without a star to orbit.");
+                        break;
                     }
-                    int starChoice = getValidInt(1,universe.getStars().size()) - 1;
-                    universe.addPlanet(universe.getStars().get(starChoice),new Planet(0,0,0,0,diameterPlanet,cPlanet,universe));
-                    break;
             } else {
                 System.out.println("Enter x: ");
                 int x = getValidInt(0,universe.getLength());
                 System.out.println("Enter y: ");
                 int y = getValidInt(0,universe.getGround());
                 System.out.println("Enter the diameter: ");
-                int diameter = getInt();
+                int diameter = getValidInt(0,1000);
                 if(choice==1){
                     System.out.println("Enter x velocity: ");
                     int xVel = getInt();
@@ -145,7 +150,7 @@ public class Interface
         return scanner.nextInt();
     }
     
-    private String getValidSave(){//finish this
+    private String getValidSave(){
         System.out.println("Choose a file to load: ");
         File folder = new File(SAVES_PATH);
         File[] files = folder.listFiles();
